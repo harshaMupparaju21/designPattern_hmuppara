@@ -1,3 +1,5 @@
+import java.io.*;
+
 public class Facade {
 
 	private int UserType;
@@ -10,7 +12,12 @@ public class Facade {
 
 	private Person thePerson;
 
-	public boolean login() {
+	public boolean login() throws Exception {
+		Login loginValidation = new Login();
+		int user = loginValidation.login();
+		if (user == 0 || user == 1){
+			return true;
+		}
 		return false;
 	}
 
