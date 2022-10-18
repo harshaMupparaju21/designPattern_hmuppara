@@ -10,6 +10,8 @@ public class Facade {
 
 	private ClassProductList theProductList;
 
+	public Product[] products;
+
 	private Person thePerson;
 
 	public boolean login() throws Exception {
@@ -45,12 +47,13 @@ public class Facade {
 
 	}
 
-	public void createUser(UserInfoItem userinfoitem) {
+	public void createUser(UserInfoItem userinfoitem) throws Exception {
 
 	}
 
-	public void createProductList() {
-
+	public void createProductList() throws Exception {
+		theProductList = new ClassProductList();
+		products = theProductList.getProductList();
 	}
 
 	public void AttachProductToUser() {

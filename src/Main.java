@@ -1,6 +1,6 @@
 public class Main {
     public static void main(String[] args) throws Exception {
-        Facade facade=new Facade();
+        Facade facade = new Facade();
 
         boolean validateLogin = facade.login();
         if (validateLogin == true){
@@ -9,5 +9,12 @@ public class Main {
             System.out.println("Username/Password is incorrect");
             facade.login();
         }
+
+        facade.createProductList();
+        Product[] productList = facade.products;
+        for(int i = 0; i < productList.length; i++){
+            System.out.println(productList[i].getProductName() +"  "+productList[i].getProductType());
+        }
+
     }
 }
