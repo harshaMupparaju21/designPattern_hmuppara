@@ -11,7 +11,10 @@ public class Main {
         }
 
         facade.createProductList();
-        facade.chooseProductType();
-
+        facade.showMenuToUser();
+        int userType = facade.getUserType();
+        if(userType == 0) {
+            facade.chooseProductType();
+        }
     }
 }

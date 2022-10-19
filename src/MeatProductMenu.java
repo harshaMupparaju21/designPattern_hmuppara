@@ -19,6 +19,7 @@ public class MeatProductMenu implements ProductMenu {
 
 
 	public List<String> getMeatItems() throws Exception {
+
 		for(Product p : products){
 			if(p.getProductType() == 0){
 				meatProducts.add(p.getProductName());

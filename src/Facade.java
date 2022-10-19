@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Facade {
@@ -16,6 +18,8 @@ public class Facade {
 	private Person thePerson;
 
 	private UserInfoItem userInfoItem;
+
+	private List<String> sellerItems = new ArrayList<String>();
 
 	public boolean login() throws Exception {
 		Login loginValidation = new Login();
@@ -54,7 +58,8 @@ public class Facade {
 
 	public void createUser(UserInfoItem userinfoitem) throws Exception {
 		if (this.UserType == 1){
-			thePerson = new Seller(userinfoitem);
+			thePerson = new Seller(userinfoitem, this.sellerItems);
+			thePerson.showMenu();
 		} else if (this.UserType == 0){
 			thePerson = new Buyer(userInfoItem);
 		}
@@ -82,7 +87,6 @@ public class Facade {
 
 	public void chooseProductType() throws Exception {
 		Scanner productInput = new Scanner(System.in);
-
 		System.out.println("Select a Product(Enter 0 for Meat and 1 for Produce) : ");
 		int productType = Integer.parseInt(productInput.nextLine());
 
@@ -106,7 +110,35 @@ public class Facade {
 
 	}
 
+
+	public void showMenuToUser() throws Exception {
+		if(this.UserType == 0){
+			this.chooseProductType();
+		} else if (this.UserType == 1){
+			String current_dir = System.getProperty("user.dir");
+
+			File userProductFile = new File(current_dir+"/src/UserProduct.txt");
+			BufferedReader userProduct_br = new BufferedReader(new FileReader(userProductFile));
+
+			String userProductInfo;
+			while ((userProductInfo = userProduct_br.readLine()) != null) {
+
+				String[] userDetails = userProductInfo.split(":");
+				String username = userDetails[0];
+				String selectedItem = userDetails[1];
+				if (this.userInfoItem.getUserName().equals(username)) {
+						this.sellerItems.add(selectedItem);
+				}
+			}
+			this.createUser(userInfoItem);
+		}
+	}
+
 	public Product[] getProducts() {
 		return products;
+	}
+
+	public int getUserType() {
+		return UserType;
 	}
 }
