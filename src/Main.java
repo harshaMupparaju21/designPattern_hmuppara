@@ -3,18 +3,15 @@ public class Main {
         Facade facade = new Facade();
 
         boolean validateLogin = facade.login();
-        if (validateLogin == true){
+        if (validateLogin == true) {
             System.out.println("Login is Successful");
-        } else{
+        } else {
             System.out.println("Username/Password is incorrect");
             facade.login();
         }
 
         facade.createProductList();
-        Product[] productList = facade.products;
-        for(int i = 0; i < productList.length; i++){
-            System.out.println(productList[i].getProductName() +"  "+productList[i].getProductType());
-        }
+        facade.chooseProductType();
 
     }
 }

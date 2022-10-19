@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 public class Login {
 
+    private UserInfoItem userInfoItem;
+
     public int login() throws Exception {
         Scanner userInput = new Scanner(System.in);
         System.out.println("Please enter your Username:  ");
@@ -31,6 +33,7 @@ public class Login {
                 String username = userDetails[0];
                 String password = userDetails[1];
                 if (input_userName.equals(username) && input_password.equals(password)) {
+                    userInfoItem = new UserInfoItem(username, 0);
                     return 0;
                 }
             }
@@ -45,12 +48,14 @@ public class Login {
                 String username = userDetails[0];
                 String password = userDetails[1];
                 if (input_userName.equals(username) && input_password.equals(password)) {
+                    userInfoItem = new UserInfoItem(username, 1);
                     return 1;
                 }
-
             }
             return -1;
         }
 
-
+    public UserInfoItem getUserInfoItem() {
+        return userInfoItem;
+    }
 }

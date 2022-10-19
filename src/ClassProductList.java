@@ -25,7 +25,11 @@ public class ClassProductList {
 
 		while ((productInfo = product_br.readLine()) != null) {
 			String[] productDetails = productInfo.split(":");
-			productList.add(new Product(productDetails[0],productDetails[1]));
+			int productType = 0;
+			if (productDetails[0].equals("Produce")){
+				productType = 1;
+			}
+			productList.add(new Product(productDetails[1], productDetails[0], productType));
 		}
 
 		int length = productList.size();

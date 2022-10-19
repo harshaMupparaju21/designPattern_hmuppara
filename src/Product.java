@@ -6,10 +6,13 @@ public class Product {
 
 	private String productName;
 
-	private String productType;
+	private String productTypeName;
 
-	public Product(String productName, String productType) {
+	private int productType;
+
+	public Product(String productName, String productTypeName, int productType) {
 		this.productName = productName;
+		this.productTypeName = productTypeName;
 		this.productType = productType;
 	}
 
@@ -21,11 +24,19 @@ public class Product {
 		this.productName = productName;
 	}
 
-	public String getProductType() {
+	public String getProductTypeName() {
+		return productTypeName;
+	}
+
+	public void setProductTypeName(String productTypeName) {
+		this.productTypeName = productTypeName;
+	}
+
+	public int getProductType() {
 		return productType;
 	}
 
-	public void setProductType(String productType) {
+	public void setProductType(int productType) {
 		this.productType = productType;
 	}
 }
