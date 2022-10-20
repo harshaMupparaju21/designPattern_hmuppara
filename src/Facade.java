@@ -71,35 +71,35 @@ public class Facade {
 	}
 
 	public void AttachProductToUser() throws Exception {
-		String current_dir = System.getProperty("user.dir");
 
-		File userProductFile = new File(current_dir+"/src/UserProduct.txt");
-		BufferedReader userProduct_br = new BufferedReader(new FileReader(userProductFile));
-		String userProductInfo;
-		while ((userProductInfo = userProduct_br.readLine()) != null) {
+	}
 
-			String[] userDetails = userProductInfo.split(":");
-			String user = userDetails[0];
-			String product = userDetails[1];
-
-			}
-		}
-
-	public void chooseProductType() throws Exception {
+	public void displayProductsByProductType() throws Exception {
 		Scanner productInput = new Scanner(System.in);
 		System.out.println("Select a Product(Enter 0 for Meat and 1 for Produce) : ");
-		int productType = Integer.parseInt(productInput.nextLine());
+		String productType = productInput.nextLine();
 
-		if(productType == 0){
-			MeatProductMenu meatProductMenu =  new MeatProductMenu(productType, this.products);
+		int productType1 = -1;
+
+		try {
+			productType1 = Integer.parseInt(productType);
+
+		} catch (NumberFormatException e){
+			System.out.println("Please enter a correct value.");
+			this.displayProductsByProductType();
+		}
+
+		if(productType1 == 0){
+			MeatProductMenu meatProductMenu =  new MeatProductMenu(productType1, this.products);
 			meatProductMenu.getMeatItems();
 			meatProductMenu.showMenu();
-		}	else if(productType == 1){
-				ProduceProductMenu produceProductMenu = new ProduceProductMenu(productType, this.products);
+		}else if(productType1 == 1){
+				ProduceProductMenu produceProductMenu = new ProduceProductMenu(productType1, this.products);
 				produceProductMenu.getProduceItems();
 				produceProductMenu.showMenu();
-		}	else{
-				this.chooseProductType();
+		}else{
+			    System.out.println("Please enter a correct value.");
+				this.displayProductsByProductType();
 		}
 	}
 
@@ -110,10 +110,9 @@ public class Facade {
 
 	}
 
-
 	public void showMenuToUser() throws Exception {
 		if(this.UserType == 0){
-			this.chooseProductType();
+			this.displayProductsByProductType();
 		} else if (this.UserType == 1){
 			String current_dir = System.getProperty("user.dir");
 

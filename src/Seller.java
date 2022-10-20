@@ -21,10 +21,16 @@ public class Seller extends Person {
 		this.sellerItems = sellerItems;
 	}
 	public void showMenu() {
-			for(String item : sellerItems){
-				System.out.println(item);
+		if (sellerItems.size() != 0){
+			System.out.println("You have the following items to sell: ");
+			int i = 1;
+			for(String item : sellerItems) {
+				System.out.println(i+". "+item);
+				i++;
 			}
-
+		} else {
+			System.out.println("No items to sell");
+		}
 	}
 
 	@Override
@@ -32,10 +38,13 @@ public class Seller extends Person {
 
 	}
 
-	public ProductMenu CreateProductMenu() {
-
-
-		return null;
+	public ProductMenu CreateProductMenu(int productType) {
+		if(productType == 0){
+			this.productMenu = new MeatProductMenu(productType);
+		} else if (productType == 1){
+			this.productMenu = new ProduceProductMenu(productType);
+		}
+		return productMenu;
 	}
 
 }

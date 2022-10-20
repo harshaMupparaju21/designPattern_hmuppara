@@ -30,5 +30,4 @@ public class Buyer extends Person {
 		}
 		return productMenu;
 	}
-
 }
