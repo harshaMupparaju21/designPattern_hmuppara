@@ -12,5 +12,6 @@ public class Main {
 
         facade.createProductList();
         facade.showMenuToUser();
+        facade.AttachProductToUser();
     }
 }

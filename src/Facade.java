@@ -7,9 +7,9 @@ public class Facade {
 
 	private int UserType;
 
-	private Product theSelectedProduct;
+	private Product theSelectedProduct = null;
 
-	private int nProductCategory;
+	private int nProductCategory = -1;
 
 	private ClassProductList theProductList;
 
@@ -18,6 +18,10 @@ public class Facade {
 	private Person thePerson;
 
 	private UserInfoItem userInfoItem;
+
+	private List<String> meatItems;
+
+	private  List<String> produceItems;
 
 	private List<String> sellerItems = new ArrayList<String>();
 
@@ -71,6 +75,10 @@ public class Facade {
 	}
 
 	public void AttachProductToUser() throws Exception {
+		  Product selectedProduct = this.SelectProduct();
+          UserProduct userProduct = new UserProduct(this.userInfoItem.getUserName(),
+				  									selectedProduct.getProductName(), this.nProductCategory);
+		  System.out.println("You have selected "+selectedProduct.getProductName());
 
 	}
 
@@ -79,33 +87,52 @@ public class Facade {
 		System.out.println("Select a Product(Enter 0 for Meat and 1 for Produce) : ");
 		String productType = productInput.nextLine();
 
-		int productType1 = -1;
-
 		try {
-			productType1 = Integer.parseInt(productType);
+			nProductCategory = Integer.parseInt(productType);
 
 		} catch (NumberFormatException e){
 			System.out.println("Please enter a correct value.");
 			this.displayProductsByProductType();
 		}
 
-		if(productType1 == 0){
-			MeatProductMenu meatProductMenu =  new MeatProductMenu(productType1, this.products);
-			meatProductMenu.getMeatItems();
+		if(nProductCategory == 0){
+			MeatProductMenu meatProductMenu =  new MeatProductMenu(nProductCategory, this.products);
+			this.meatItems = meatProductMenu.getMeatItems();
 			meatProductMenu.showMenu();
-		}else if(productType1 == 1){
-				ProduceProductMenu produceProductMenu = new ProduceProductMenu(productType1, this.products);
-				produceProductMenu.getProduceItems();
-				produceProductMenu.showMenu();
+		}else if(nProductCategory == 1){
+			ProduceProductMenu produceProductMenu = new ProduceProductMenu(nProductCategory, this.products);
+			this.produceItems = produceProductMenu.getProduceItems();
+			produceProductMenu.showMenu();
 		}else{
-			    System.out.println("Please enter a correct value.");
-				this.displayProductsByProductType();
+			System.out.println("Please enter a correct value.");
+			this.displayProductsByProductType();
 		}
 	}
 
 	public Product SelectProduct() {
-		return null;
+		Scanner productInput = new Scanner(System.in);
+		System.out.println("Select a Product (Enter number to select a product) : ");
+		String product = productInput.nextLine();
+
+		int index = -1;
+		try {
+			index = Integer.parseInt(product);
+		} catch (NumberFormatException e){
+			System.out.println("Please enter a correct value.");
+			this.SelectProduct();
+		}
+
+		if(this.nProductCategory == 0){
+			this.theSelectedProduct = new Product(this.meatItems.get((index)-1), "Meat", 0);
+		}else if (this.nProductCategory == 1){
+			 this.theSelectedProduct = new Product(this.produceItems.get((index)-1), "Produce", 1);
+		} else {
+			this.SelectProduct();
+		}
+
+		return theSelectedProduct;
 	}
+
 	public void productOperation() {
 
 	}

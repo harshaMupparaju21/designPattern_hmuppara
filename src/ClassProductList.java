@@ -25,8 +25,10 @@ public class ClassProductList {
 
 		while ((productInfo = product_br.readLine()) != null) {
 			String[] productDetails = productInfo.split(":");
-			int productType = 0;
-			if (productDetails[0].equals("Produce")){
+			int productType = -1;
+			if (productDetails[0].equalsIgnoreCase("Meat")){
+				productType = 0;
+			} else if (productDetails[0].equalsIgnoreCase("Produce")){
 				productType = 1;
 			}
 			productList.add(new Product(productDetails[1], productDetails[0], productType));

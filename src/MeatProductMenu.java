@@ -29,8 +29,10 @@ public class MeatProductMenu implements ProductMenu {
 	}
 
 	public void showMenu() {
+		int i = 1;
 		for(String meatItem : meatProducts){
-			System.out.println(meatItem);
+			System.out.println(i + ": " + meatItem);
+			i++;
 		}
 	}
 

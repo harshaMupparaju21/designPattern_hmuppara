@@ -28,8 +28,10 @@ public class ProduceProductMenu implements ProductMenu {
 	}
 
 	public void showMenu() {
+		int i = 1;
 		for( String produceItem : produceProducts){
-			System.out.println(produceItem);
+			System.out.println(i+ ". "+produceItem);
+			i++;
 		}
 	}
 
