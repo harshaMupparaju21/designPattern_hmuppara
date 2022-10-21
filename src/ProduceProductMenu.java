@@ -27,12 +27,18 @@ public class ProduceProductMenu implements ProductMenu {
 	   return  produceProducts;
 	}
 
-	public void showMenu() {
+	public void showMenu() throws Exception{
+		List<String> produceProducts = this.getProduceItems();
 		int i = 1;
-		for( String produceItem : produceProducts){
-			System.out.println(i+ ". "+produceItem);
-			i++;
+		if(produceProducts.size() > 0){
+			for( String produceItem : produceProducts){
+				System.out.println(i+ ". "+produceItem);
+				i++;
+			}
+		} else{
+			System.out.println("No Produce Items to display");
 		}
+
 	}
 
 	public void showAddButton() {

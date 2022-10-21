@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Seller extends Person {
@@ -10,27 +12,18 @@ public class Seller extends Person {
 
 	private ProductMenu productMenu;
 
-	private List<String> sellerItems;
+	private Product[] products;
 
-	public Seller(UserInfoItem userInfoItem) {
-		this.userInfoItem = userInfoItem;
-	}
+	private List<Product> sellerProductList = new ArrayList<>();
 
-	public Seller(UserInfoItem userInfoItem, List<String> sellerItems) {
+	private Product[] sellerProductArray;
+
+	public Seller(UserInfoItem userInfoItem, Product[] products) {
 		this.userInfoItem = userInfoItem;
-		this.sellerItems = sellerItems;
+		this.products = products;
 	}
 	public void showMenu() {
-		if (sellerItems.size() != 0){
-			System.out.println("You have the following items to sell: ");
-			int i = 1;
-			for(String item : sellerItems) {
-				System.out.println(i+". "+item);
-				i++;
-			}
-		} else {
-			System.out.println("No items to sell");
-		}
+
 	}
 
 	@Override
@@ -38,11 +31,46 @@ public class Seller extends Person {
 
 	}
 
-	public ProductMenu CreateProductMenu(int productType) {
+
+	public Product[] getSellerProducts() throws Exception {
+		String current_dir = System.getProperty("user.dir");
+
+		File userProductFile = new File(current_dir+"/src/UserProduct.txt");
+		BufferedReader userProduct_br = new BufferedReader(new FileReader(userProductFile));
+
+		String userProductInfo;
+		while ((userProductInfo = userProduct_br.readLine()) != null) {
+
+			String[] userDetails = userProductInfo.split(":");
+			String username = userDetails[0];
+			String item = userDetails[1];
+			if (this.userInfoItem.getUserName().equals(username)) {
+				for(Product p : this.products){
+					if(p.getProductName().equalsIgnoreCase(item)){
+						sellerProductList.add(new Product(p.getProductName(), p.getProductTypeName(), p.getProductType()));
+					}
+				}
+			}
+		}
+		ProductIterator productIterator = new ProductIterator(this.sellerProductList, 0);
+		this.sellerProductArray = new Product[this.sellerProductList.size()];
+		int i = 0;
+
+		while(productIterator.hasNext()){
+			this.sellerProductArray[i] = productIterator.next();
+			i++;
+		}
+
+		return this.sellerProductArray;
+	}
+
+
+	public ProductMenu CreateProductMenu(int productType) throws Exception {
+		 Product[] products1 =  this.getSellerProducts();
 		if(productType == 0){
-			this.productMenu = new MeatProductMenu(productType);
+			this.productMenu = new MeatProductMenu(productType, products1);
 		} else if (productType == 1){
-			this.productMenu = new ProduceProductMenu(productType);
+			this.productMenu = new ProduceProductMenu(productType, products1);
 		}
 		return productMenu;
 	}

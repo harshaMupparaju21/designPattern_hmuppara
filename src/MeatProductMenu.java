@@ -8,18 +8,14 @@ public class MeatProductMenu implements ProductMenu {
 	private Product[] products;
 	private List<String> meatProducts = new ArrayList<String>();
 
-	public MeatProductMenu(int productType) {
-		this.productType = productType;
-	}
 
 	public MeatProductMenu(int productType, Product[] products) {
 		this.productType = productType;
 		this.products = products;
 	}
 
-
 	public List<String> getMeatItems() throws Exception {
-		for(Product p : products){
+		for(Product p : this.products){
 			if(p.getProductType() == 0){
 				meatProducts.add(p.getProductName());
 			}
@@ -27,11 +23,16 @@ public class MeatProductMenu implements ProductMenu {
 		return  meatProducts;
 	}
 
-	public void showMenu() {
+	public void showMenu() throws Exception {
+		List<String> meatProducts = this.getMeatItems();
 		int i = 1;
-		for(String meatItem : meatProducts){
-			System.out.println(i + ": " + meatItem);
-			i++;
+		if(meatProducts.size() > 0){
+			for(String meatItem : meatProducts) {
+				System.out.println(i + ": " + meatItem);
+				i++;
+			}
+		} else{
+			System.out.println("No Meat Items to display");
 		}
 	}
 

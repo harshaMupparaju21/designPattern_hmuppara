@@ -39,6 +39,9 @@ public class ClassProductList {
 
 		int i = 0;
 		ProductIterator productIterator = new ProductIterator(productList, 0);
+
+		//Implementing Iterator Pattern by using Product Iterator
+
 		while(productIterator.hasNext()){
 			this.product[i] = productIterator.next();
 			i++;

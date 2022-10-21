@@ -25,15 +25,19 @@ public class Facade {
 
 	private List<String> sellerItems = new ArrayList<String>();
 
+	private ProductMenu productMenu;
+
 	public boolean login() throws Exception {
 		Login loginValidation = new Login();
 		int user = loginValidation.login();
 		if (user == 0 || user == 1){
 			this.UserType = user;
 			this.userInfoItem = loginValidation.getUserInfoItem();
-
+			System.out.println("Login is Successful");
 			return true;
 		}
+		System.out.println("Username/Password is incorrect");
+		this.login();
 		return false;
 	}
 
@@ -62,12 +66,12 @@ public class Facade {
 	}
 
 	public void createUser(UserInfoItem userinfoitem) throws Exception {
-		if (this.UserType == 1){
-			thePerson = new Seller(userinfoitem, this.sellerItems);
-			thePerson.showMenu();
-		} else if (this.UserType == 0){
-			thePerson = new Buyer(userinfoitem);
+		if (userinfoitem.getUserType() == 1){
+			thePerson = new Seller(userinfoitem, this.products);
+		} else if (userinfoitem.getUserType() == 0){
+			thePerson = new Buyer(userInfoItem, this.products);
 		}
+		this.showMenuToUser();
 	}
 
 	public void createProductList() throws Exception {
@@ -79,35 +83,8 @@ public class Facade {
 		  Product selectedProduct = this.SelectProduct();
           UserProduct userProduct = new UserProduct(this.userInfoItem.getUserName(),
 				  									selectedProduct.getProductName(), this.nProductCategory);
-		  System.out.println("You have selected "+selectedProduct.getProductName());
+		  System.out.println("You have selected "+userProduct.getProduct());
 
-	}
-
-	public void displayProductsByProductType() throws Exception {
-		Scanner productInput = new Scanner(System.in);
-		System.out.println("Select a Product(Enter 0 for Meat and 1 for Produce) : ");
-		String productType = productInput.nextLine();
-
-		try {
-			nProductCategory = Integer.parseInt(productType);
-
-		} catch (NumberFormatException e){
-			System.out.println("Please enter a correct value.");
-			this.displayProductsByProductType();
-		}
-
-		if(nProductCategory == 0){
-			MeatProductMenu meatProductMenu =  new MeatProductMenu(nProductCategory, this.products);
-			this.meatItems = meatProductMenu.getMeatItems();
-			meatProductMenu.showMenu();
-		}else if(nProductCategory == 1){
-			ProduceProductMenu produceProductMenu = new ProduceProductMenu(nProductCategory, this.products);
-			this.produceItems = produceProductMenu.getProduceItems();
-			produceProductMenu.showMenu();
-		}else{
-			System.out.println("Please enter a correct value.");
-			this.displayProductsByProductType();
-		}
 	}
 
 	public Product SelectProduct() {
@@ -146,30 +123,37 @@ public class Facade {
 	}
 
 	public void showMenuToUser() throws Exception {
-		if(this.UserType == 0){
-			this.displayProductsByProductType();
-		} else if (this.UserType == 1){
-			String current_dir = System.getProperty("user.dir");
 
-			File userProductFile = new File(current_dir+"/src/UserProduct.txt");
-			BufferedReader userProduct_br = new BufferedReader(new FileReader(userProductFile));
+		Scanner productInput = new Scanner(System.in);
+		System.out.println("Select a Product(Enter 0 for Meat and 1 for Produce) : ");
 
-			String userProductInfo;
-			while ((userProductInfo = userProduct_br.readLine()) != null) {
+		String productType = productInput.nextLine();
 
-				String[] userDetails = userProductInfo.split(":");
-				String username = userDetails[0];
-				String selectedItem = userDetails[1];
-				if (this.userInfoItem.getUserName().equals(username)) {
-						this.sellerItems.add(selectedItem);
-				}
-			}
-			this.createUser(userInfoItem);
+		try {
+			this.nProductCategory = Integer.parseInt(productType);
+		} catch (NumberFormatException e){
+			System.out.println("Please enter a correct value.");
+		    this.showMenuToUser();
+		}
+
+		this.productMenu = thePerson.CreateProductMenu(this.nProductCategory);
+		this.productMenu.showMenu();
+
+		if(nProductCategory == 0){
+			this.meatItems = new MeatProductMenu(this.nProductCategory, this.products).getMeatItems();
+		}else if(nProductCategory == 1){
+			this.produceItems = new ProduceProductMenu(this.nProductCategory, this.products).getProduceItems();
 		}
 	}
 
+
 	public Product[] getProducts() {
 		return products;
+	}
+
+
+	public UserInfoItem getUserInfoItem() {
+		return userInfoItem;
 	}
 
 	public int getUserType() {
