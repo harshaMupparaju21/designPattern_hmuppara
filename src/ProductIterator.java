@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 
 public class ProductIterator implements ListIterator {
@@ -5,35 +8,26 @@ public class ProductIterator implements ListIterator {
 	private ClassProductList classProductList;
 	private int index;
 
-	Product[] productList = classProductList.getProductList();
+	List<Product> productList = new ArrayList<>();
 
-
-	public ProductIterator(Product[] productList, int position) throws Exception {
+	public ProductIterator(List<Product> productList, int index) throws Exception {
 		this.productList = productList;
-		position = 0;
+		this.index = index;
 	}
 
 	public boolean hasNext() {
-		if(this.index >= productList.length){
-			return false;
+		if(this.index < productList.size()){
+			return true;
 		}
-		return true;
+		return false;
 	}
 
-	public Object next() {
-		return productList[index++];
-	}
-
-	public void moveToHead(){
-		this.index = 0;
+	public Product next() {
+		return productList.get(this.index++);
 	}
 
 	public void remove() {
-		if (index >= 0 && index < productList.length) {
-			for (int i = index; i < productList.length-1; i++) {
-				productList[i] = productList[i+1];
-			}
-		}
+		productList.remove(this.index);
 	}
 
 	public boolean hasPrevious() {

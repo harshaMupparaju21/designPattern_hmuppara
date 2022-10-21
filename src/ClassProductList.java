@@ -36,8 +36,12 @@ public class ClassProductList {
 
 		int length = productList.size();
 		this.product = new Product[length];
-		for (int i = 0; i< length;i++){
-			this.product[i] = productList.get(i);
+
+		int i = 0;
+		ProductIterator productIterator = new ProductIterator(productList, 0);
+		while(productIterator.hasNext()){
+			this.product[i] = productIterator.next();
+			i++;
 		}
 		return this.product;
 	}

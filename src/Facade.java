@@ -31,6 +31,7 @@ public class Facade {
 		if (user == 0 || user == 1){
 			this.UserType = user;
 			this.userInfoItem = loginValidation.getUserInfoItem();
+
 			return true;
 		}
 		return false;
@@ -65,7 +66,7 @@ public class Facade {
 			thePerson = new Seller(userinfoitem, this.sellerItems);
 			thePerson.showMenu();
 		} else if (this.UserType == 0){
-			thePerson = new Buyer(userInfoItem);
+			thePerson = new Buyer(userinfoitem);
 		}
 	}
 
@@ -111,7 +112,14 @@ public class Facade {
 
 	public Product SelectProduct() {
 		Scanner productInput = new Scanner(System.in);
-		System.out.println("Select a Product (Enter number to select a product) : ");
+		if(nProductCategory == 0){
+			System.out.println("Select a Meat Item (Enter number to select a product) : ");
+		} else if(nProductCategory == 1){
+			System.out.println("Select a Produce Item(Enter number to select a product) : ");
+		} else{
+			System.out.println("Select an Item to sell : ");
+		}
+
 		String product = productInput.nextLine();
 
 		int index = -1;
@@ -127,7 +135,7 @@ public class Facade {
 		}else if (this.nProductCategory == 1){
 			 this.theSelectedProduct = new Product(this.produceItems.get((index)-1), "Produce", 1);
 		} else {
-			this.SelectProduct();
+			this.theSelectedProduct = new Product(this.sellerItems.get((index)-1));
 		}
 
 		return theSelectedProduct;
